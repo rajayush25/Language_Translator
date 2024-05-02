@@ -1,0 +1,128 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/" method="POST">
+        <div class="container" id="secondPage">
+          <div class="box">
+            <input type="text" id="inputText" placeholder="Enter text..." name="text">
+          </div>
+          <div class="box">
+            <select id="targetLanguage" name="destlang">
+              <option value="hi">Hindi</option>
+              <option value="bn">Bengali</option>
+              <option value="te">Telugu</option>
+              <option value="mr">Marathi</option>
+              <option value="ta">Tamil</option>
+              <option value="gu">Gujarati</option>
+              <option value="kn">Kannada</option>
+              <option value="ur">Urdu</option>
+              <option value="ml">Malayalam</option>
+              <option value="pa">Punjabi</option>
+              <option value="or">Odia</option>
+              <option value="as">Assamese</option>
+            </select>
+          </div>
+          <div class="box">
+            <textarea id="translatedText" placeholder="Translated text..." readonly> {{text_trans}} </textarea>
+          </div>
+          <div class="box">
+            <button type="submit">Translate Text</button>
+          </div>
+          <button onclick="goToFirstPage()"> <a href="/"> Back to First Page</a> </button>
+        </div>
+    </form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Translation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .box {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        textarea {
+            height: 100px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        button[type="submit"]:focus {
+            outline: none;
+        }
+        button.back-btn {
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+        button.back-btn:hover {
+            background-color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <form action="/" method="POST">
+        <div class="container">
+            <div class="box">
+                <label for="translatedText">Translated Text:</label>
+                <textarea id="translatedText" placeholder="Translated text..." readonly>{{text_trans}}</textarea>
+            </div>
+            <button onclick="goToFirstPage()"> <a href="/"> Back to First Page</a> </button>
+            <!-- <button class="back-btn" onclick="goToFirstPage()">Back to First Page</button> -->
+        </div>
+    </form>
+</body>
+</html>

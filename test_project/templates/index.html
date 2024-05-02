@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Regional Language Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      text-align: center;
+    }
+    .box {
+      margin-bottom: 20px;
+    }
+    input[type="text"],
+    select,
+    textarea {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="firstPage">
+    <h1 style="font-size: 2.5em;">Regional Language Converter</h1>
+    <button onclick="showSecondPage()">Go to Text Translation</button>
+    <button onclick="showThirdPage()">Go to Document Translation</button>
+    <button onclick="showFourthPage()">Go to Image Capture</button>
+  </div>
+  <form action="/" method="POST">
+      <div class="container" id="secondPage" style="display: none;">
+        <div class="box">
+          <input type="text" id="inputText" placeholder="Enter text..." name="text">
+        </div>
+        <div class="box">
+          <select id="targetLanguage" name="destlang">
+            <option value="hi">Hindi</option>
+            <option value="bn">Bengali</option>
+            <option value="te">Telugu</option>
+            <option value="mr">Marathi</option>
+            <option value="ta">Tamil</option>
+            <option value="gu">Gujarati</option>
+            <option value="kn">Kannada</option>
+            <option value="ur">Urdu</option>
+            <option value="ml">Malayalam</option>
+            <option value="pa">Punjabi</option>
+            <option value="or">Odia</option>
+            <option value="as">Assamese</option>
+          </select>
+        </div>
+        <div class="box">
+          <textarea id="translatedText" placeholder="Translated text..." readonly> {{text_trans}} </textarea>
+        </div>
+        <div class="box">
+          <button type="submit">Translate Text</button>
+        </div>
+        <button onclick="goToFirstPage()">Back to First Page</button>
+      </div>
+  </form>
+  <form action="doc_trans" method="post" enctype = "multipart/form-data">
+  <div class="container" id="thirdPage" style="display: none;">
+    <div class="box">
+      <input type="file" id="fileInput" accept=".pdf,.doc,.docx" name="file">
+    </div>
+    <div class="box">
+      <select id="targetLanguageDocument" name="target_language">
+        <option value="hi">Hindi</option>
+        <option value="bn">Bengali</option>
+        <option value="te">Telugu</option>
+        <option value="mr">Marathi</option>
+        <option value="ta">Tamil</option>
+        <option value="gu">Gujarati</option>
+        <option value="kn">Kannada</option>
+        <option value="ur">Urdu</option>
+        <option value="ml">Malayalam</option>
+        <option value="pa">Punjabi</option>
+        <option value="or">Odia</option>
+        <option value="as">Assamese</option>
+      </select>
+    </div>
+    <div class="box">
+      <button type="submit">Translate Document</button>
+    </div>
+    <button onclick="goToFirstPage()">Back to First Page</button>
+  </div>
+</form> 
+
+  <div class="container" id="fourthPage" style="display: none;">
+    <div class="box">
+      <textarea id="capturedImage" placeholder="Captured Image..." readonly></textarea>
+    </div>
+    <div class="box">
+      <button> <a href="img_trans">Capture Image</a></button>
+    </div>
+    <button onclick="goToFirstPage()">Back to First Page</button>
+  </div>
+
+  <script>
+    function showSecondPage() {
+      document.getElementById('firstPage').style.display = 'none';
+      document.getElementById('secondPage').style.display = 'block';
+      document.getElementById('thirdPage').style.display = 'none';
+      document.getElementById('fourthPage').style.display = 'none';
+    }
+
+    function showThirdPage() {
+      document.getElementById('firstPage').style.display = 'none';
+      document.getElementById('secondPage').style.display = 'none';
+      document.getElementById('thirdPage').style.display = 'block';
+      document.getElementById('fourthPage').style.display = 'none';
+    }
+
+    function showFourthPage() {
+      document.getElementById('firstPage').style.display = 'none';
+      document.getElementById('secondPage').style.display = 'none';
+      document.getElementById('thirdPage').style.display = 'none';
+      document.getElementById('fourthPage').style.display = 'block';
+    }
+
+    function goToFirstPage() {
+      document.getElementById('firstPage').style.display = 'block';
+      document.getElementById('secondPage').style.display = 'none';
+      document.getElementById('thirdPage').style.display = 'none';
+      document.getElementById('fourthPage').style.display = 'none';
+    }
+
+    function translateText() {
+      const inputText = document.getElementById('inputText').value;
+      const targetLanguage = document.getElementById('targetLanguage').value;
+      fetch('http://localhost:5000/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          input_text: inputText,
+          desired_language: targetLanguage
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('translatedText').value = data.translated_text;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    function translateDocument() {
+      const file = document.getElementById('fileInput').files[0];
+      const targetLanguage = document.getElementById('targetLanguageDocument').value;
+      if (!file) {
+        alert('Please select a file.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('target_language', targetLanguage);
+
+      fetch('http://localhost:5000/translate_document', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('translatedText').value = data.translated_text;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    function captureImage() {
+      // Implement image capture functionality using your preferred method
+      // For example (using a placeholder):
+      const capturedImage = 'Placeholder for captured image';
+      document.getElementById('capturedImage').value = capturedImage;
+    }
+  </script>
+</body>
+</html>
